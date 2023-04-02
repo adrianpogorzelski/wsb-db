@@ -31,21 +31,15 @@ public class DatabaseConnector {
         }
     }
 
-    public void selectData(String sql) {
+    public ResultSet selectData(String sql) {
         Connection connection = this.connect();
+        ResultSet rs = null;
         try {
             Statement stm = connection.createStatement();
-            ResultSet rs = stm.executeQuery(sql);
-
-            while (rs.next()) {
-                Long id = rs.getLong("id");
-                String title = rs.getString("title");
-                String author = rs.getString("author");
-
-                System.out.println(id + ", " + title + ", " + author);
-            }
+            rs = stm.executeQuery(sql);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        return rs;
     }
 }
