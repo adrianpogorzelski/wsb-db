@@ -1,9 +1,6 @@
 package org.example;
 
-import javax.swing.plaf.nimbus.State;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.Statement;
+import java.sql.*;
 
 public class DatabaseConnector {
     public static final String DB_URL = "jdbc:postgresql://localhost:5432/postgres";
@@ -31,6 +28,24 @@ public class DatabaseConnector {
             System.out.println("Sukces");
         } catch (Exception e) {
             System.out.println(e);
+        }
+    }
+
+    public void selectData(String sql) {
+        Connection connection = this.connect();
+        try {
+            Statement stm = connection.createStatement();
+            ResultSet rs = stm.executeQuery(sql);
+
+            while (rs.next()) {
+                Long id = rs.getLong("id");
+                String title = rs.getString("title");
+                String author = rs.getString("author");
+
+                System.out.println(id + ", " + title + ", " + author);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 }
